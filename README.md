@@ -1,3 +1,8 @@
+# Team
+
+* WoongheeLee 20000000XXXX
+* JongwooKim 20000XXXXX
+
 # How to submit your project output for each stage
 1. Open <code>pom.xml</code> and change the artifect ID from <code>2016000000</code> to your student ID.
 2. Complete templates:
