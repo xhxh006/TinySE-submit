@@ -1,6 +1,6 @@
 # Team
 
-* name 1: student ID 1
+* 김민정 : 2015038086
 * name 2: student ID 2
 
 # How to submit your project output for each stage
