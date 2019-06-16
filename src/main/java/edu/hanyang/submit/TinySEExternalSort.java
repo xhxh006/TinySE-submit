@@ -23,7 +23,7 @@ import org.apache.lucene.util.ByteBlockPool.DirectAllocator;
 public class TinySEExternalSort implements ExternalSort {
 			
 	public void sort(String infile, String outfile, String tmpdir, int blocksize, int nblocks) throws IOException {
-		int nElement = (blocksize * nblocks)/((Integer.SIZE/Byte.SIZE)*3); 						//ÇÑ Run³» Æ©ÇÃÀÇ °³¼ö
+		int nElement = (blocksize * nblocks)/((Integer.SIZE/Byte.SIZE)*3); 						//ï¿½ï¿½ Runï¿½ï¿½ Æ©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		ArrayList<MutableTriple<Integer,Integer,Integer>> dataArr = new ArrayList<>(nElement);
 		
 		File dir = new File(tmpdir);
@@ -69,6 +69,7 @@ public class TinySEExternalSort implements ExternalSort {
 		input.close();
 		
 		_externalMergeSort(tmpdir,outfile,0,nblocks,blocksize);
+	
 	}
 	
 	private void _externalMergeSort(String tmpDir, String outputFile, int step,int nblocks,int blocksize) throws IOException {
@@ -77,7 +78,6 @@ public class TinySEExternalSort implements ExternalSort {
 		
 		
 		if (fileArr.length <= nblocks - 1) {
-			
 			
 			List<DataInputStream> files = new ArrayList<>();
 			for (File f : fileArr) {
@@ -97,12 +97,20 @@ public class TinySEExternalSort implements ExternalSort {
 						new FileInputStream (f.getAbsolutePath()),blocksize));
 				files.add(dos);
 				cnt++;
-				if (cnt == nblocks - 1) {
+				if (cnt == nblocks - 1){
 					n_way_merge(files, tmpDir + File.separator + String.valueOf(step+1),run_step,blocksize);
 					run_step++;
-				}
+					cnt = 0;
+					files.clear();
+					System.out.println(run_step);
+				}				
 			}
-		_externalMergeSort(tmpDir, outputFile, step+1, nblocks, blocksize);
+			if(files.size() > 0) {
+				n_way_merge(files, tmpDir + File.separator + String.valueOf(step+1),run_step,blocksize);
+				files.clear();
+			}
+			System.out.println("check"+run_step);	
+			_externalMergeSort(tmpDir, outputFile, step+1, nblocks, blocksize);
 		}
 	}
 	
@@ -112,9 +120,9 @@ public class TinySEExternalSort implements ExternalSort {
 		if(!dir.exists()) {
 			dir.mkdir();
 		}
-		
+	
 		DataOutputStream output = new DataOutputStream(new BufferedOutputStream(
-				new FileOutputStream(outputFile),blocksize));
+				new FileOutputStream(outputFile+File.separator+String.valueOf(run_step)+".data"),blocksize));
 		
 		PriorityQueue<DataManager> queue = new PriorityQueue<>(files.size(), new Comparator<DataManager>() {
 			public int compare(DataManager o1, DataManager o2) {
@@ -149,6 +157,7 @@ public class TinySEExternalSort implements ExternalSort {
 				continue;
 			} 
 		}
+
 		output.close();
 	}
 	
