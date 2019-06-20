@@ -10,6 +10,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.Ignore;
+
 
 import edu.hanyang.indexer.DocumentCursor;
 import edu.hanyang.indexer.IntermediateList;
@@ -17,22 +19,19 @@ import edu.hanyang.indexer.IntermediatePositionalList;
 import edu.hanyang.indexer.QueryPlanTree;
 import edu.hanyang.indexer.QueryPlanTree.NODE_TYPE;
 import edu.hanyang.indexer.QueryPlanTree.QueryPlanNode;
-import edu.hanyang.indexer.StatAPI;
 import edu.hanyang.submit.TinySEQueryProcess;
 import edu.hanyang.utils.TestDocCursor;
 import edu.hanyang.utils.TestIntermediateList;
 import edu.hanyang.utils.TestIntermediatePositionalList;
 //@Ignore("Delete this line to unit test stage 4")
 public class QueryProcessTest {
-	List<List<Integer>> posList = null;
-	TinySEQueryProcess qp = null;
-	TestStat stat = null;
+	List<List<Integer>> posList;
+	TinySEQueryProcess qp;
 
 	@Before
 	public void init() {
 		posList = makePostingList();
 		qp = new TinySEQueryProcess();
-		stat = new TestStat(posList);
 	}
 
 	
@@ -105,7 +104,7 @@ public class QueryProcessTest {
 	@Test
 	public void test_query_plan_tree() throws Exception {
 		String query = "3 5 7";
-		QueryPlanTree tree = qp.parse_query(query, stat);
+		QueryPlanTree tree = qp.parse_query(query);
 
 		DocumentCursor dc = executeQuery(tree.root);
 		assertEquals(dc.get_docid(), 0);
@@ -119,7 +118,7 @@ public class QueryProcessTest {
 		assertEquals(dc.is_eol(), true);
 
 		query = "\"3 4\" 7";
-		tree = qp.parse_query(query, stat);
+		tree = qp.parse_query(query);
 
 		dc = executeQuery(tree.root);
 		assertEquals(dc.get_docid(), 1);
@@ -198,35 +197,5 @@ public class QueryProcessTest {
 		posList.add(Arrays.asList(0, 5, 1, 6, 12, 15, 17, 1, 2, 11, 21, 2, 1, 14, 3, 2, 3, 21, 4, 1, 8));
 
 		return posList;
-	}
-	
-	private class TestStat extends StatAPI {
-		private List<List<Integer>> poslist = null;
-		
-		public TestStat (List<List<Integer>> poslist) {
-			this.poslist = poslist;
-		}
-
-		@Override
-		public int get_doc_count(int termid) throws Exception {
-			return (new TestDocCursor(poslist.get(termid))).get_doc_count();
-		}
-
-		@Override
-		public int get_max_docid(int termid) throws Exception {
-			return (new TestDocCursor(poslist.get(termid))).get_max_docid();
-		}
-
-		@Override
-		public int get_min_docid(int termid) throws Exception {
-			return (new TestDocCursor(poslist.get(termid))).get_min_docid();
-		}
-
-		@Override
-		public int get_pages(int termid) throws Exception {
-			return poslist.get(termid).size();
-		}
-
-		
 	}
 }

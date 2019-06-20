@@ -8,6 +8,7 @@ import edu.hanyang.indexer.PositionCursor;
 import edu.hanyang.indexer.IntermediateList;
 import edu.hanyang.indexer.IntermediatePositionalList;
 import edu.hanyang.indexer.QueryPlanTree;
+/*ì—¬ê¸°ë¶€í„°  import 4ê°œê°€ ì¡°êµë‹˜ êº¼ì— ì—†ìŒ */
 import edu.hanyang.indexer.QueryPlanTree.NODE_TYPE;
 import edu.hanyang.indexer.QueryPlanTree.QueryPlanNode;
 import edu.hanyang.indexer.QueryProcess;
@@ -33,7 +34,7 @@ public class TinySEQueryProcess implements QueryProcess {
 			}else if(docID1 > docID2) {
 				op2.go_next();
 			}
-			else {									// °°Àº °æ¿ì-> µÎ ´Ü¾î¸¦ Æ÷ÇÔÇÑ ¹®¼­³»¿¡¼­ ´Ü¾î¿¡ ´ëÇÑ position -> sequence/shift
+			else {									// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½-> ï¿½ï¿½ ï¿½Ü¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ü¾î¿¡ ï¿½ï¿½ï¿½ï¿½ position -> sequence/shift
 				q1 = op1.get_position_cursor();
 				q2 = op2.get_position_cursor();
 				
@@ -86,8 +87,8 @@ public class TinySEQueryProcess implements QueryProcess {
 		QueryPlanTree tree = new QueryPlanTree();
 		QueryPlanNode node, operator;
 		Boolean in_phase = false;
-		ArrayList<QueryPlanNode> nodelist = new ArrayList<QueryPlanNode>();	// OP_AND,OP_SHIFTED_AND ¹¹°¡ ¸¸µé¾îÁöÁö ¸ð¸£±â¿¡ left¿¡ ¹» ´ãÀ»Áö ¸ð¸£±â¿¡ 
-		int shift = 0;  													// Ã³À½ ¶§ OP_SHIFTED_AND »ý¼º ÇÏ´Ï±î ÀÚ±â ÀÚ½Å°ú shift=0
+		ArrayList<QueryPlanNode> nodelist = new ArrayList<QueryPlanNode>();	// OP_AND,OP_SHIFTED_AND ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ð¸£±â¿¡ leftï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ð¸£±â¿¡ 
+		int shift = 0;  													// Ã³ï¿½ï¿½ ï¿½ï¿½ OP_SHIFTED_AND ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´Ï±ï¿½ ï¿½Ú±ï¿½ ï¿½Ú½Å°ï¿½ shift=0
 		
 		String[] words = query.split(" ");
 		
@@ -102,7 +103,7 @@ public class TinySEQueryProcess implements QueryProcess {
 				shift = 0;
 			}
 			
-			if(in_phase == false) {								// »õ·Î¿î ´Ü¾î¿¡ ´ëÇØ ¾ÕÀÇ nodeÀÇ °æ¿ì´Â op_remove_pos »Ó 1) "À» ³¡À¸·Î ÇÏ´Â ´Ü¾î or 2) ±×³É
+			if(in_phase == false) {								// ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Ü¾î¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ nodeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ op_remove_pos ï¿½ï¿½ 1) "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ü¾ï¿½ or 2) ï¿½×³ï¿½
 				operator = tree.new QueryPlanNode();
 				operator.type = NODE_TYPE.OP_REMOVE_POS;
 				operator.left = node;
@@ -110,25 +111,25 @@ public class TinySEQueryProcess implements QueryProcess {
 				
 				if(nodelist.isEmpty()) {
 //					System.out.println("Start "+query);
-					nodelist.add(node);							// op_remove_pos µé¾î°¨
+					nodelist.add(node);							// op_remove_pos ï¿½ï¿½î°¨
 				}else {
 					operator = tree.new QueryPlanNode();
 					operator.type = NODE_TYPE.OP_AND;
 					operator.left = nodelist.get(nodelist.size()-1);
 					operator.right = node;
 					nodelist.remove(nodelist.size()-1);
-					nodelist.add(operator);						// op_and µé¾î°¨
+					nodelist.add(operator);						// op_and ï¿½ï¿½î°¨
 				}	
 			}
 			else {									
 				if(nodelist.isEmpty()) {
 //					System.out.println("Start "+query);
 				}
-				// in_phase == true : Ã³À½ÀÌ ¾Æ´Ï¸é ¹«Á¶°Ç shift_andÀÇ right
+				// in_phase == true : Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ shift_andï¿½ï¿½ right
 				if(shift == 0) {
-					nodelist.add(node);  							// oprand µé¾î°¨ - nodelist empty¿©ºÎ·Î ¾ÈµÊ - op_and³ª op_remove_pos¶§¹®	
+					nodelist.add(node);  							// oprand ï¿½ï¿½î°¨ - nodelist emptyï¿½ï¿½ï¿½Î·ï¿½ ï¿½Èµï¿½ - op_andï¿½ï¿½ op_remove_posï¿½ï¿½ï¿½ï¿½	
 				}
-				// "ÀÇ Ã¹½ÃÀÛÀÌ ¾Æ´Ñ »õ·Î¿î in_phase ´Ü¾î¿¡ ´ëÇØ  1) ±×³É or 2) "À» ³¡À¸·Î ÇÏ´Â ´Ü¾î -> nodelist ¾Õ node 1) shift_and 2) first "node-oprand
+				// "ï¿½ï¿½ Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ in_phase ï¿½Ü¾î¿¡ ï¿½ï¿½ï¿½ï¿½  1) ï¿½×³ï¿½ or 2) "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ü¾ï¿½ -> nodelist ï¿½ï¿½ node 1) shift_and 2) first "node-oprand
 				else {
 					operator = tree.new QueryPlanNode();
 					operator.type = NODE_TYPE.OP_SHIFTED_AND;
@@ -147,11 +148,11 @@ public class TinySEQueryProcess implements QueryProcess {
 						in_phase = false;
 					}
 					
-					nodelist.add(node);								// shifted_and ¶Ç´Â op_remove_pos µé¾î°¨
+					nodelist.add(node);								// shifted_and ï¿½Ç´ï¿½ op_remove_pos ï¿½ï¿½î°¨
 					shift ++;
 				}					
 			}
-			// Äõ¸® ¸¶Áö¸·Àº ´Ü¾î È¤Àº "À» ³¡À¸·Î ÇÏ´Â ´Ü¾î -> 1) op_remove_pos ´Ü¾î ÇÏ³ª 2) op_remove_pos ""¹­À½ 3) op_and ´Ü¾î ¹­À½->right Ã¤¿öÁü
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ü¾ï¿½ È¤ï¿½ï¿½ "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ü¾ï¿½ -> 1) op_remove_pos ï¿½Ü¾ï¿½ ï¿½Ï³ï¿½ 2) op_remove_pos ""ï¿½ï¿½ï¿½ï¿½ 3) op_and ï¿½Ü¾ï¿½ ï¿½ï¿½ï¿½ï¿½->right Ã¤ï¿½ï¿½ï¿½ï¿½
 		}
 		QueryPlanNode root = tree.new QueryPlanNode();
 		root = nodelist.get(0);
