@@ -34,19 +34,26 @@ public class BPlusTreeTest {
 		tree.insert(6, 15);
 		tree.insert(4, 20);
 		tree.insert(7, 1);
+		
 		tree.insert(8, 5);
+		
 		tree.insert(17, 7);
 		tree.insert(30, 8);
 		tree.insert(1, 8);
+		
 		tree.insert(58, 1);
+		
 		tree.insert(25, 8);
 		tree.insert(96, 32);
+		
 		tree.insert(21, 8);
+		
 		tree.insert(9, 98);
 		tree.insert(57, 54);
 		tree.insert(157, 54);
 		tree.insert(247, 54);
 		tree.insert(357, 254);
+		
 		tree.insert(557, 54);
 		tree.close();
  

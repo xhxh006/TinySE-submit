@@ -69,6 +69,88 @@ public class TinySEExternalSort implements ExternalSort {
 		input.close();
 		
 		_externalMergeSort(tmpdir,outfile,0,nblocks,blocksize);
+	// }
+	
+	// private void _externalMergeSort(String tmpDir, String outputFile, int step,int nblocks,int blocksize) throws IOException {
+
+	// 	File[] fileArr = (new File(tmpDir + File.separator + String.valueOf(step))).listFiles();
+		
+		
+	// 	if (fileArr.length <= nblocks - 1) {
+			
+			
+	// 		List<DataInputStream> files = new ArrayList<>();
+	// 		for (File f : fileArr) {
+	// 			DataInputStream dos = new DataInputStream(new BufferedInputStream(
+	// 					new FileInputStream (f.getAbsolutePath()),blocksize));
+	// 			files.add(dos);				
+	// 		}
+	// 		merge(files,outputFile,blocksize);
+	// 	}
+	// 	else {
+						
+	// 		List<DataInputStream> files = new ArrayList<>();
+	// 		int cnt = 0;
+	// 		int run_step = 0;
+	// 		for (File f : fileArr) {	
+	// 			DataInputStream dos = new DataInputStream(new BufferedInputStream(
+	// 					new FileInputStream (f.getAbsolutePath()),blocksize));
+	// 			files.add(dos);
+	// 			cnt++;
+	// 			if (cnt == nblocks - 1) {
+	// 				n_way_merge(files, tmpDir + File.separator + String.valueOf(step+1),run_step,blocksize);
+	// 				run_step++;
+	// 			}
+	// 		}
+	// 	_externalMergeSort(tmpDir, outputFile, step+1, nblocks, blocksize);
+	// 	}
+	// }
+	
+	// public void n_way_merge(List<DataInputStream> files, String outputFile,int run_step,int blocksize) throws IOException {
+		
+	// 	File dir = new File(outputFile);
+	// 	if(!dir.exists()) {
+	// 		dir.mkdir();
+	// 	}
+		
+	// 	DataOutputStream output = new DataOutputStream(new BufferedOutputStream(
+	// 			new FileOutputStream(outputFile),blocksize));
+		
+	// 	PriorityQueue<DataManager> queue = new PriorityQueue<>(files.size(), new Comparator<DataManager>() {
+	// 		public int compare(DataManager o1, DataManager o2) {
+	// 			return o1.tuple.compareTo(o2.tuple);
+	// 			}
+	// 		});
+		
+	// 	for(DataInputStream f : files) {
+	// 		try{
+	// 			DataManager dm = new DataManager(f.readInt(),f.readInt(),f.readInt(),files.indexOf(f));
+	// 			queue.add(dm);
+				
+	// 		}catch(EOFException e) {
+	// 			continue;
+	// 		}
+	// 	}
+		
+	// 	while (queue.size() != 0) {
+	// 		try {
+	// 			DataManager dm = queue.poll();
+	// 			MutableTriple<Integer, Integer, Integer> tmp = dm.getTuple();
+										
+	// 			output.writeInt(tmp.getLeft());
+	// 			output.writeInt(tmp.getMiddle());
+	// 			output.writeInt(tmp.getRight());
+							
+	// 			dm.setTuple(files.get(dm.index).readInt(),files.get(dm.index).readInt(),files.get(dm.index).readInt());
+
+	// 			queue.add(dm);
+				
+	// 		}catch(EOFException e) {
+	// 			continue;
+	// 		} 
+	// 	}
+	// 	output.close();
+	// }
 	
 	}
 	
